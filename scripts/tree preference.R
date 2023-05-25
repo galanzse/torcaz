@@ -1,5 +1,8 @@
 
-# wood pigeons prefer certain trees (H2)
+
+# ANALYSIS OF TREE PREFERENCE BY WOODPIGEONS IN MADRID FROM SEPT. 21 TO SEPT. 22
+
+
 library(ggpubr)
 source('scripts/import data.R')
 
@@ -143,7 +146,7 @@ g1 <- ggplot(aes(x=date, y=n, color=genus), data=temp) +
   geom_smooth(method='loess', span=0.75, se=F) +
   theme_bw() +
   ylab('Observations') + xlab('') +
-  geom_vline(xintercept=temp$date[c(47,144,254)], linetype=4) +
+  geom_vline(xintercept=temp$date[c(31,113,182)], linetype=4) +
   theme(legend.position='top', legend.title=element_blank(),
         axis.text.x=element_text(size=9, angle=-45, hjust=0.6),
         axis.text.y=element_text(size=9),
@@ -160,14 +163,14 @@ g2 <- ggplot(aes(x=date, y=n, color=genus), data=temp) +
   geom_smooth(method='loess', span=0.75, se=F) +
   theme_bw() +
   ylab('Abundances') + xlab('') +
-  geom_vline(xintercept=temp$date[c(47,144,254)], linetype=4) +
-  theme(legend.position='none', legend.title=element_blank(),
+  geom_vline(xintercept=temp$date[c(31,113,182)], linetype=4) +
+  theme(legend.position='top', legend.title=element_blank(),
         axis.text.x=element_text(size=9, angle=-45, hjust=0.6),
         axis.text.y=element_text(size=9),
         axis.title.y=element_text(size=9))
 
 
-ggarrange(g1, g2, ncol=1, heights=c(1.25,1))
+ggarrange(g1, g2, ncol=2)
 
 
 # tree usage x season

@@ -1,11 +1,15 @@
 
+
+# IMPORT WOODPIGEON OBSERVATIONS AND TREE DATA
+
+
 library(readxl)
 library(tidyverse)
 
 
 # import data
 palomas <- read_excel("data/palomas_190523.xlsx") %>% as.data.frame()
-str(palomas)
+ str(palomas)
 summary(palomas)
 
 palomas$season <- as.factor(palomas$season) # order seasons

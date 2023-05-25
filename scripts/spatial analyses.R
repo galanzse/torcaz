@@ -1,4 +1,8 @@
 
+
+# USE OF PARKS AND URBAN FABRIC BY WOODPIGEONS IN MADRID
+
+
 library(terra)
 library(mapSpain)
 library(sf)
@@ -16,7 +20,7 @@ parques <- st_read('data/Parques historicos.kml')[1] %>% vect() %>% terra::proje
 
 # siose
 file <- 'C:/Users/user/Desktop/SAR2017_28_Madrid_GPKG/28_MADRID.gpkg'
-ogrListLayers(file)
+# ogrListLayers(file)
 siose <- st_read(dsn=file, layer='SAR_28_T_COMBINADA') %>%
   subset(MUNICIPIO_NOMBRE=='MADRID' &
            COBERTURA_DESC %in% c("Zona verde artificial y arbolado urbano", "Cursos de agua",
@@ -41,6 +45,30 @@ plot(siose, 'COBERTURA_DESC', col=c('green3','lightblue','grey'), legend=NULL)
 points(v_palomas, pch=4, col='red')
 
 
+# plot: park usage per season
+par(mfrow=c(2,2), mar=c(4,4,4,4))
+
+plot(siose, 'COBERTURA_DESC', col=c('green3','grey80','grey80'), legend=NULL, main='autumn')
+lines(siose, col='grey95')
+points(v_palomas[v_palomas$season=='autumn' & v_palomas$parkcity=='park',],, pch=4, col='red')
+points(v_palomas[v_palomas$season=='autumn' & v_palomas$parkcity=='city',], pch=4, col='blue')
+
+plot(siose, 'COBERTURA_DESC', col=c('green3','grey80','grey80'), legend=NULL, main='winter')
+lines(siose, col='grey95')
+points(v_palomas[v_palomas$season=='winter' & v_palomas$parkcity=='park',], pch=4, col='red')
+points(v_palomas[v_palomas$season=='winter' & v_palomas$parkcity=='city',], pch=4, col='blue')
+
+plot(siose, 'COBERTURA_DESC', col=c('green3','grey80','grey80'), legend=NULL, main='spring')
+lines(siose, col='grey95')
+points(v_palomas[v_palomas$season=='spring' & v_palomas$parkcity=='park',], pch=4, col='red')
+points(v_palomas[v_palomas$season=='spring' & v_palomas$parkcity=='city',], pch=4, col='blue')
+
+plot(siose, 'COBERTURA_DESC', col=c('green3','grey80','grey80'), legend=NULL, main='summer')
+lines(siose, col='grey95')
+points(v_palomas[v_palomas$season=='summer' & v_palomas$parkcity=='park',], pch=4, col='red')
+points(v_palomas[v_palomas$season=='summer' & v_palomas$parkcity=='city',], pch=4, col='blue')
+
+
 # distance to park
 v_palomas2 <- v_palomas[which(!(geom(v_palomas)[,'x']>441500 & geom(v_palomas)[,'y']>4476000)),] # remove Cuarto Deposito
 palomas2 <- as.data.frame(v_palomas2) # redo dataframe
@@ -49,30 +77,8 @@ palomas2$park_dist1 <- v_palomas2 %>% distance(as.lines(parques), unit='m') %>% 
 palomas2$park_dist1[palomas2$parkcity=='park'] <- palomas2$park_dist1[palomas2$parkcity=='park'] * (-1)
 boxplot(palomas2[,'park_dist1'])
 
-
-# plot: park usage per season
-par(mfrow=c(2,2), mar=c(4,4,4,4))
-
-plot(siose, 'COBERTURA_DESC', col=c('green3','grey80','grey80'), legend=NULL, main='autumn')
-lines(siose, col='grey95')
-points(v_palomas2[v_palomas2$season=='autumn' & v_palomas2$parkcity=='park',],, pch=4, col='red')
-points(v_palomas2[v_palomas2$season=='autumn' & v_palomas2$parkcity=='city',], pch=4, col='blue')
-
-plot(siose, 'COBERTURA_DESC', col=c('green3','grey80','grey80'), legend=NULL, main='winter')
-lines(siose, col='grey95')
-points(v_palomas2[v_palomas2$season=='winter' & v_palomas2$parkcity=='park',], pch=4, col='red')
-points(v_palomas2[v_palomas2$season=='winter' & v_palomas2$parkcity=='city',], pch=4, col='blue')
-
-plot(siose, 'COBERTURA_DESC', col=c('green3','grey80','grey80'), legend=NULL, main='spring')
-lines(siose, col='grey95')
-points(v_palomas2[v_palomas2$season=='spring' & v_palomas2$parkcity=='park',], pch=4, col='red')
-points(v_palomas2[v_palomas2$season=='spring' & v_palomas2$parkcity=='city',], pch=4, col='blue')
-
-plot(siose, 'COBERTURA_DESC', col=c('green3','grey80','grey80'), legend=NULL, main='summer')
-lines(siose, col='grey95')
-points(v_palomas2[v_palomas2$season=='summer' & v_palomas2$parkcity=='park',], pch=4, col='red')
-points(v_palomas2[v_palomas2$season=='summer' & v_palomas2$parkcity=='city',], pch=4, col='blue')
-
+# test
+lm(park_dist1 ~ season, data=palomas2) %>% anova()
 
 # distance to park across seasons
 my_comparisons <- list(c("winter","summer"))

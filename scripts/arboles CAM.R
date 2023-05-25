@@ -1,4 +1,8 @@
 
+
+# SPATIAL AVAILABILITY OF WOODPIGEON TREE RESOURCES
+
+
 library(terra)
 library(sf)
 
