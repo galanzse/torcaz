@@ -91,8 +91,13 @@ ggplot(palomas_tree, aes(x=month, y=n, fill=genus)) +
         axis.text.x=element_text(size=12), axis.title.y=element_text(size=12)) +
   guides(fill=guide_legend(ncol=1))
 
+palomas_tree %>% 
+  count(season = factor(season), genus = factor(genus)) %>% 
+  mutate(pct = prop.table(n)*100) %>% 
+  View()
 
-# points plot: species and genua
+
+# points plot: species and genus
 # Sys.setlocale("LC_ALL", "English") # set language to English for plots
 table(palomas_tree$plant2)/nrow(palomas_tree)*100 # 5
 

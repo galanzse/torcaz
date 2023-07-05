@@ -67,7 +67,7 @@ ggarrange(g1, g2, ncol=1, heights=c(1.1,1))
 
 # Ground*City (H1 & H4)
 # table(palomas$groundtree, palomas$parkcity, palomas$season)
-levels(palomas_uncount$parkcity) <- c('street','park')
+levels(palomas_uncount$parkcity) <- c('urban matrix','park')
 ggplot(aes(x=parkcity,  fill=groundtree), data=palomas_uncount) +
   geom_bar(aes(y = (..count..)/sum(..count..))) +
   scale_fill_grey() +
